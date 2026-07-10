@@ -98,11 +98,38 @@ class TeacherManagementSystem:
         branch = input("Student Branch : ")
 
         student_obj = Student(name, branch)
-
+        self._Marks[name] = {
+            "Physics": 0,
+            "Chemistry": 0,
+            "Mathematics": 0,
+            "Average": (0 + 0 + 0) / 3,
+        }
         self._studentDB[name] = student_obj
+        self.dumpmain(name)
+        
+
 
         print("Student Added Successfully")
         print("_" * 80)
+
+    def dumpmain(self,name):
+        with open("students.txt", "a") as f:
+            f.write(f"""
+             ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n
+             Name       : {name}\n
+             USN        : {self._studentDB[name]._USN}\n
+             Branch     : {self._studentDB[name]._Branch}\n
+             Marks:---------------------------------------------------------\n
+                 Physics      : {self._Marks[name]['Physics']}\n
+                 Chemistry    : {self._Marks[name]['Chemistry']}\n
+                 Mathematics  : {self._Marks[name]['Mathematics']}\n
+                 Avarage      : {self._Marks[name]["Average"]}\n
+                 -------------------------------------------------------------\n
+             Attendance : {self._studentDB[name]._Attendence}\n
+             
+             """)
+    def specificDump(self,value):
+        
 
     def _addMarks(self):
         print("_" * 80)
@@ -180,16 +207,33 @@ class TeacherManagementSystem:
         for student in self._studentDB.values():
             student.Display(self._Marks)
     
-    def _allintofile(self,system):
-        for name,_ in self._studentDB.items():
-            pass
+    def _allintofile(self):
+       
+        for name,data in self._studentDB.items():
+            with open("students.txt", "a") as f:
+                f.write(f"""
+                 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n
+                 Name       : {name}\n
+                 USN        : {self._studentDB[name]._USN}\n
+                 Branch     : {self._studentDB[name]._Branch}\n
+                 Marks:---------------------------------------------------------\n
+                     Physics      : {self._Marks[name]['Physics']}\n
+                     Chemistry    : {self._Marks[name]['Chemistry']}\n
+                     Mathematics  : {self._Marks[name]['Mathematics']}\n
+                     Avarage      : {self._Marks[name]["Average"]}\n
+                     -------------------------------------------------------------\n
+                 Attendance : {self._studentDB[name]._Attendence}\n
+                 
+                 """)
+
 
 class Engine:
 
     def __init__(self):
         self.sys = TeacherManagementSystem()
-
+        
     def run(self):
+
 
         while True:
 
@@ -222,7 +266,7 @@ class Engine:
                 self.sys.takeattendence()
 
             elif choice==6:
-                self.sys.
+                self.sys._allintofile()
             elif choice == 6:
                 print("Thank You")
                 break
